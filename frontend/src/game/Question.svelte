@@ -63,13 +63,15 @@
         question = await fetch("/api/game/question").then(res => res.json())
     })
 
-    function checkAnswer(answer) {
+    async function checkAnswer(answer) {
         answered++
 
         if (question.correctAnswer == answer) {
             correct = true
 
-            actionCharge.set($actionCharge+25)
+            console.log($actionCharge)
+            await actionCharge.set($actionCharge+25)
+            console.log($actionCharge)
 
             setTimeout(async () => {
                 correct = false
@@ -91,7 +93,7 @@
                 actionCharge: $actionCharge
             })
 
-            actionCharge.set(0)
+            await actionCharge.set(0)
 
             page.set("ready")
         }
