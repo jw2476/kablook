@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "rollup -c",
-    "dev": "ln -s ../node_modules . && rollup -c -w",
+    "dev": "ln -sf ../node_modules . && rollup -c -w",
     "validate": "svelte-check"
   }
 }

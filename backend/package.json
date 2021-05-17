@@ -1,8 +1,8 @@
 {
   "main": "dist/index.js",
   "scripts": {
-    "dev": "ln -s ../node_modules . && nodemon -e 'ts' -x 'npx tsc && node .'",
+    "dev": "ln -sf ../node_modules . && nodemon -e 'ts' -x 'npx tsc && node .'",
     "build": "npx tsc",
-    "start": "ln -s ../node_modules . && node ."
+    "start": "ln -sf ../node_modules . && node ."
   }
 }
