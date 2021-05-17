@@ -1,5 +1,5 @@
 {
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "dev": "ln -sf ../node_modules . && nodemon -e 'ts' -x 'npx tsc && node .'",
     "build": "npx tsc",
