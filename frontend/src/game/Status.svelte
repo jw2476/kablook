@@ -20,11 +20,9 @@
     }
 
     onMount(() => {
-        socket.on("player finished", perc => messages = [...messages, (`${perc*100}% of players have finished`)])
         socket.on("attack", (attack: Attack) => {
-            messages = [...messages, (`${attack.username} with an action charge of ${attack.actionCharge}`)]
+            messages = [...messages, (`${attack.username} attacked with an action charge of ${attack.actionCharge}`)]
         })
-        socket.on("round over", () => messages = [...messages, "The round is over"])
     })
 
 

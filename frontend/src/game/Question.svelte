@@ -35,10 +35,10 @@
 </section>
 
 <script lang="ts">
-    import {onDestroy, onMount} from "svelte";
+    import {onMount} from "svelte";
     import {tweened} from "svelte/motion";
     import {cubicOut} from "svelte/easing";
-    import {page, socket} from "../stores"
+    import {page, uuid} from "../stores"
 
     let question: Question = {
         question: "",
@@ -65,32 +65,38 @@
 
     async function checkAnswer(answer) {
         answered++
+        console.log($uuid)
 
         if (question.correctAnswer == answer) {
             correct = true
 
-            console.log($actionCharge)
             await actionCharge.set($actionCharge+25)
-            console.log($actionCharge)
 
             setTimeout(async () => {
                 correct = false
                 question = await fetch("/api/game/question").then(res => res.json())
-            }, 3000);
+            }, 1500);
 
         } else {
             incorrect = true
             setTimeout(async () => {
                 incorrect = false
                 question = await fetch("/api/game/question").then(res => res.json())
-            }, 3000);
+            }, 1500);
         }
 
         if (answered === 4) {
             answered = 0
 
-            socket.emit("attack", {
-                actionCharge: $actionCharge
+            fetch("/api/game/attack", {
+                method: "POST",
+                body: JSON.stringify({
+                    uuid: $uuid,
+                    actionCharge: $actionCharge
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             })
 
             await actionCharge.set(0)

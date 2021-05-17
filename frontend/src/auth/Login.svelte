@@ -77,7 +77,16 @@
 
         if (usernameEmpty || passwordEmpty) return;
 
-        fetch(`/api/auth/login?username=${username}&password=${password}`).then(res => res.json()).then(res => {
+        fetch("/api/auth/login", {
+            method: "POST",
+            body: JSON.stringify({
+                username,
+                password
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => res.json()).then(res => {
             const result = res as LoginResult
 
             switch (result.status) {

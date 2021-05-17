@@ -15,6 +15,6 @@
 
     onMount(() => {
         socket.on("player finished", p => playersFinished = p)
-        socket.on("round over", page.set("question"))
+        socket.on("round over", () => page.set("question"))
     })
 </script>

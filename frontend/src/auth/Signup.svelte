@@ -71,7 +71,16 @@
 
         if (usernameEmpty || passwordEmpty) return;
 
-        fetch(`/api/auth/signup?username=${username}&password=${password}`).then(res => res.json()).then(res => {
+        fetch("/api/auth/signup", {
+            method: "POST",
+            body: JSON.stringify({
+                username,
+                password
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => res.json()).then(res => {
             const result = res as SignUpResult
             switch (result.status) {
                 case SignUpStatus.ErrUsernameTaken: {

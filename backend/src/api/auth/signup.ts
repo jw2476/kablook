@@ -10,8 +10,10 @@ enum SignUpStatus {
 }
 
 export default async (req: Request, res: Response) => {
-    const username = req.query.username.toString()
-    let password = req.query.password.toString()
+    let {
+        username,
+        password
+    } = req.body
 
     const hash = createHash('sha256')
     hash.update(password)
