@@ -28,8 +28,8 @@
             </div>
         {/if}
         <div id="progress">
-            <p class="title">Action Charge</p>
-            <progress class="progress is-primary" value={$actionCharge} max="100">15%</progress>
+            <p class="title">Charge</p>
+            <progress class="progress is-primary" value={$actionCharge} max="100"></progress>
         </div>
     </div>
 </section>
@@ -38,7 +38,7 @@
     import {onMount} from "svelte";
     import {tweened} from "svelte/motion";
     import {cubicOut} from "svelte/easing";
-    import {page, uuid} from "../stores"
+    import {page, uuid, spell, socket} from "../stores"
 
     let question: Question = {
         question: "",
@@ -61,6 +61,7 @@
 
     onMount(async () => {
         question = await fetch("/api/game/question").then(res => res.json())
+        socket.on("round over", () => page.set("spellselect"))
     })
 
     async function checkAnswer(answer) {
@@ -88,20 +89,21 @@
         if (answered === 4) {
             answered = 0
 
-            fetch("/api/game/attack", {
+            const last = await fetch("/api/game/attack", {
                 method: "POST",
                 body: JSON.stringify({
                     uuid: $uuid,
-                    actionCharge: $actionCharge
+                    actionCharge: $actionCharge,
+                    spell: $spell
                 }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
-            })
+            }).then(res => res.json())
 
             await actionCharge.set(0)
 
-            page.set("ready")
+            if (!last) page.set("ready")
         }
     }
 </script>

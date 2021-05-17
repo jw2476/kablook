@@ -11,6 +11,8 @@
     import Question from "./game/Question.svelte";
     import Ready from "./game/Ready.svelte";
     import Status from "./game/Status.svelte";
+    import SpellSelect from "./game/SpellSelect.svelte";
+    import Victory from "./game/Victory.svelte";
 
     let currPage;
     let width;
@@ -18,7 +20,9 @@
     page.subscribe(page => currPage = page);
 </script>
 <main bind:clientWidth={width}>
-    <Navbar/>
+    {#if ["home", "signup", "login", "hostgame", "joingame"].includes(currPage)}
+        <Navbar/>
+    {/if}
     {#if currPage === "home"}
         <div in:fade="{{delay: 500}}" out:fade="{{duration: 500}}">
             <Home/>
@@ -54,6 +58,14 @@
     {:else if currPage === "status"}
         <div in:fade="{{delay: 500}}" out:fade="{{duration: 500}}">
             <Status/>
+        </div>
+    {:else if currPage === "spellselect"}
+        <div in:fade="{{delay: 500}}" out:fade="{{duration: 500}}">
+            <SpellSelect/>
+        </div>
+    {:else if currPage === "victory"}
+        <div in:fade="{{delay: 500}}" out:fade="{{duration: 500}}">
+            <Victory/>
         </div>
     {/if}
 </main>

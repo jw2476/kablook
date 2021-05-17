@@ -3,7 +3,6 @@
         <div class="box">
             <p class="title">You have finished you round, please wait for other players to finish</p>
         </div>
-        <progress class="progress is-primary" value={playersFinished} max="1">15%</progress>
     </div>
 </section>
 
@@ -15,6 +14,6 @@
 
     onMount(() => {
         socket.on("player finished", p => playersFinished = p)
-        socket.on("round over", () => page.set("question"))
+        socket.on("round over", () => page.set("spellselect"))
     })
 </script>

@@ -2,6 +2,7 @@ import {Socket} from "socket.io";
 import {Game} from "../models/Game";
 import {User} from "../models/User";
 import sockets from "./sockets";
+import {Boss} from "../models/Boss";
 
 export default function (socket: Socket) {
     socket.on("disconnect", async () => {
@@ -13,6 +14,7 @@ export default function (socket: Socket) {
                 sockets.get(player.username).emit("host disconnected")
             }
 
+            await Boss.deleteOne({_id: hostingGame.boss})
             await hostingGame.deleteOne()
         }
 

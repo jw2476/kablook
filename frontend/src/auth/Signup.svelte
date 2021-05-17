@@ -1,12 +1,6 @@
 <section class="section">
     <div class="container">
         <p class="title">Sign Up</p>
-        {#if success}
-            <div class="notification is-primary">
-                <button class="delete" on:click={() => success = false}></button>
-                Account Created for: {username}!
-            </div>
-        {/if}
 
         <div class="field">
             <label class="label">Username</label>
@@ -45,14 +39,13 @@
 </section>
 
 <script lang="ts">
-    import {uuid} from '../stores'
+    import {uuid, page} from '../stores'
 
     let username = "";
     let password = "";
     let usernameEmpty = false;
     let passwordEmpty = false;
     let usernameTaken = false;
-    let success = false;
 
     enum SignUpStatus {
         ErrUsernameTaken = -1,
@@ -88,8 +81,8 @@
                     break
                 }
                 case SignUpStatus.Success: {
-                    success = true;
                     uuid.set(result.uuid);
+                    page.set("home")
                 }
             }
         })

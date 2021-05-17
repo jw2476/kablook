@@ -17,9 +17,6 @@ export default function (socket: Socket) {
         game.players.push(player)
         await game.save();
 
-        player.currentGame = game._id;
-        await player.save()
-
         const hostSocket = sockets.get(game.host.username)
         hostSocket.emit("user joined", socket.data.username)
 

@@ -11,6 +11,6 @@
     import {onMount} from "svelte";
 
     onMount(() => {
-        socket.on("start game", () => page.set("question"))
+        socket.on("start game", () => page.set("spellselect"))
     })
 </script>
