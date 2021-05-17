@@ -1,7 +1,7 @@
 <section class="hero has-text-centered is-medium is-primary">
     <div class="hero-body">
         <p class="title has-text-dark">
-            Quiz Game
+            Kablook
         </p>
         <p class="subtitle has-text-dark">
             By Jack W
