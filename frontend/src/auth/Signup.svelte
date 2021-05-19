@@ -31,6 +31,18 @@
             {/if}
         </div>
         <div class="field">
+            <label class="label">Job</label>
+            <br>
+            <div class="columns box">
+                {#each jobs as j}
+                    <div class="control column">
+                        <button class="button {job === j.name ? 'is-dark' : 'is-primary'} is-fullwidth" on:click={() => job = j.name}>
+                            {j.name} - {j.description}
+                        </button>
+                    </div>
+                {/each}
+        </div>
+        <div class="field">
             <div class="control">
                 <button class="button is-primary" on:click={submit}>Submit</button>
             </div>
@@ -39,10 +51,13 @@
 </section>
 
 <script lang="ts">
-    import {uuid, page} from '../stores'
+    import {page, uuid} from '../stores'
+    import {onMount} from "svelte";
 
     let username = "";
     let password = "";
+    let job = "";
+    let jobs = [];
     let usernameEmpty = false;
     let passwordEmpty = false;
     let usernameTaken = false;
@@ -57,6 +72,8 @@
         uuid: string
     }
 
+    onMount(() => fetch("/api/jobs").then(res => res.json()).then(res => jobs = res))
+
     async function submit() {
         usernameEmpty = !username;
         passwordEmpty = !password;
@@ -68,7 +85,8 @@
             method: "POST",
             body: JSON.stringify({
                 username,
-                password
+                password,
+                job
             }),
             headers: {
                 'Content-Type': 'application/json'

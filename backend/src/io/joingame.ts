@@ -7,6 +7,9 @@ export default function (socket: Socket) {
     socket.on("join game", async code => {
         const game = await Game.findOne({"code": code}).populate("host")
         const player = await User.findOne({username: socket.data.username})
+        player.hitPoints = 10
+        player.job === "Paladin" ? player.health = 1000 : player.health = 100 // Paladins have more health
+        await player.save()
 
         socket.emit("join game success")
 

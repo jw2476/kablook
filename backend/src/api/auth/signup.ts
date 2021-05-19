@@ -12,7 +12,8 @@ enum SignUpStatus {
 export default async (req: Request, res: Response) => {
     let {
         username,
-        password
+        password,
+        job
     } = req.body
 
     const hash = createHash('sha256')
@@ -23,7 +24,7 @@ export default async (req: Request, res: Response) => {
     if (existingUser) {
         res.json({
             status: SignUpStatus.ErrUsernameTaken,
-            uuid: null
+            uuid: existingUser.uuid
         });
         return
     }
@@ -33,11 +34,13 @@ export default async (req: Request, res: Response) => {
     await new User({
         username,
         password,
-        uuid
+        uuid,
+        job
     }).save()
 
     res.json({
         status: SignUpStatus.Success,
-        uuid
+        uuid,
+        job
     })
 }

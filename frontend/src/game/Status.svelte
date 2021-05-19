@@ -4,7 +4,7 @@
             <p class="title">Boss Health</p>
             <progress class="progress is-danger is-large" value={$bossHealth} max="{maxBossHealth}"></progress>
             {#each messages as message}
-                <p class="subtitle">{message}</p>
+                <p class="subtitle {message.style ? message.style : ''}">{message.content}</p>
             {/each}
         </div>
     </div>
@@ -15,7 +15,12 @@
     import {onMount} from "svelte";
     import {tweened} from "svelte/motion";
 
-    let messages = [];
+    type Message = {
+        content: string
+        style?: string
+    }
+
+    let messages: Message[] = [];
     let bossHealth = tweened(100);
     let maxBossHealth = 100
 
@@ -26,15 +31,24 @@
     }
 
     onMount(() => {
-        socket.on("attack", async (attack: Attack) => {
-            messages = [...messages, (`${attack.username} attacked with an action charge of ${attack.actionCharge} dealing ${attack.damage} damage`)]
-            await bossHealth.set($bossHealth-attack.damage)
+        socket.on("message", async (message: string) => {
+            messages = [...messages, {
+                content: message,
+            }]
         })
 
-        fetch(`/api/game/boss?uuid=${$uuid}`).then(res => res.json()).then(res => {
-            bossHealth.set(res.health)
-            maxBossHealth = res.max
+        socket.on("styled message", async (message: Message) => {
+            messages = [...messages, message]
         })
+    })
+
+    socket.on("set boss health", async (health: number) => {
+        await bossHealth.set(health)
+    })
+
+    fetch(`/api/game/boss?uuid=${$uuid}`).then(res => res.json()).then(res => {
+        bossHealth.set(res.health)
+        maxBossHealth = res.max
     })
 
 

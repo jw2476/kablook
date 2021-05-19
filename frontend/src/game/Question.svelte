@@ -62,6 +62,7 @@
     onMount(async () => {
         question = await fetch("/api/game/question").then(res => res.json())
         socket.on("round over", () => page.set("spellselect"))
+        socket.on("dead", () => page.set("dead"))
     })
 
     async function checkAnswer(answer) {

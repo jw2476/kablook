@@ -7,6 +7,9 @@ type IUser = {
     password: String
     uuid: String
     actionCharge: Number
+    job: String
+    hitPoints: number
+    health: number
 }
 
 export type UserDoc = IUser & Document;
@@ -15,7 +18,10 @@ const userModel = new Schema({
     username: String,
     password: String,
     uuid: String,
-    actionCharge: Number
+    actionCharge: Number,
+    job: String,
+    hitPoints: Number,
+    health: Number
 })
 
 export const User = model<UserDoc>("User", userModel);

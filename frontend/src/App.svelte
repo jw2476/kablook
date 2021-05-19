@@ -13,6 +13,7 @@
     import Status from "./game/Status.svelte";
     import SpellSelect from "./game/SpellSelect.svelte";
     import Victory from "./game/Victory.svelte";
+    import Dead from "./game/Dead.svelte";
 
     let currPage;
     let width;
@@ -20,7 +21,7 @@
     page.subscribe(page => currPage = page);
 </script>
 <main bind:clientWidth={width}>
-    {#if ["home", "signup", "login", "hostgame", "joingame"].includes(currPage)}
+    {#if ["home", "signup", "login", "hostgame", "joingame", "victory", "dead"].includes(currPage)}
         <Navbar/>
     {/if}
     {#if currPage === "home"}
@@ -66,6 +67,10 @@
     {:else if currPage === "victory"}
         <div in:fade="{{delay: 500}}" out:fade="{{duration: 500}}">
             <Victory/>
+        </div>
+    {:else if currPage === "dead"}
+        <div in:fade="{{delay: 500}}" out:fade="{{duration: 500}}">
+            <Dead/>
         </div>
     {/if}
 </main>
