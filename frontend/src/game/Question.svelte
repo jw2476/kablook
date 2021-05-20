@@ -30,6 +30,8 @@
         <div id="progress">
             <p class="title">Charge</p>
             <progress class="progress is-primary" value={$actionCharge} max="100"></progress>
+            <p class="title">Health</p>
+            <progress class="progress is-danger" value={$health} max={maxHealth}></progress>
         </div>
     </div>
 </section>
@@ -47,11 +49,24 @@
     };
     let correct;
     let incorrect;
+    let answered = 0;
+
+
     let actionCharge = tweened(0, {
         easing: cubicOut,
         duration: 1000
     });
-    let answered = 0;
+
+    let health = tweened(100, {
+        easing: cubicOut,
+        duration: 1000
+    });
+    let maxHealth = 100;
+
+    fetch(`/api/user?uuid=${$uuid}`).then(res => res.json()).then(player => {
+        maxHealth = player.maxHealth
+        health.set(player.health)
+    })
 
     type Question = {
         question: string,
@@ -61,6 +76,7 @@
 
     onMount(async () => {
         question = await fetch("/api/game/question").then(res => res.json())
+        socket.on("set player health", newHealth => health.set(newHealth))
         socket.on("round over", () => page.set("spellselect"))
         socket.on("dead", () => page.set("dead"))
     })

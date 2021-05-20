@@ -34,12 +34,25 @@ export default async (req: Request, res: Response) => {
 
     switch (spell.id) {
         case SpellType.Fireball: {
-            boss.data.fire++
+            if (actionCharge === 100) {
+                boss.data.fire++
+                hostSocket.emit("message", `${player.username} set the boss on fire`)
+            }
+
             damage = spell.baseDamage * actionCharge / 100
             break
         }
         case SpellType.Electrocute: {
-            boss.data.electro++
+            if (actionCharge === 100) boss.data.electro++
+
+            if (Math.floor(Math.random() * 20) == 0 && Math.random() < actionCharge / 100) {
+                boss.data.stunned = true
+                hostSocket.emit("styled message", {
+                    content: `${player.username} stunned the boss!`,
+                    style: "has-text-primary has-text-weight-bold"
+                })
+            }
+
             damage = spell.baseDamage * actionCharge / 100
             break
         }
@@ -47,14 +60,14 @@ export default async (req: Request, res: Response) => {
             damage = spell.baseDamage * actionCharge / 100
             break
         }
-        case SpellType.Smite: {
-            damage = spell.baseDamage * actionCharge / 100
+        case SpellType.Heal: {
+            player.health += spell.baseDamage * actionCharge / 100
             break
         }
         case SpellType.TacticalStrike: {
             damage = spell.baseDamage * actionCharge / 100
 
-            if (Math.floor(Math.random() * 10) == 0 && Math.random() < actionCharge / 100) { // 1 in 10 chance for stun and n in 4 chance where n is the number of correct answers
+            if (Math.floor(Math.random() * 20) == 0 && Math.random() < actionCharge / 100) { // 2 in 10 chance for stun and n in 4 chance where n is the number of correct answers
                 boss.data.stunned = true
                 hostSocket.emit("styled message", {
                     content: `${player.username} stunned the boss!`,
@@ -107,6 +120,18 @@ export default async (req: Request, res: Response) => {
             await boss.save()
         }
 
+        if (boss.data.fire !== 0) { // If on fire
+             boss.health -= 10 * boss.data.fire
+
+            hostSocket.emit("styled message", {
+                content: `The boss is on fire dealing ${10 * boss.data.fire} damage`,
+                style: "has-text-primary has-text-weight-bold"
+            })
+
+            boss.data.fire--
+            await boss.save()
+        }
+
         const players = []
 
         for (const playerID of game.players) {
@@ -116,37 +141,45 @@ export default async (req: Request, res: Response) => {
 
         players.map(player => sockets.get(player.username).emit("round over"))
 
-        const totalHitPoints = players.map(player => player.hitPoints).reduce((a, b) => a + b)
-        for (const player of players) {
-            if (Math.floor(Math.random() * totalHitPoints) < player.hitPoints) {
-                player.hitPoints -= boss.damage
-                hostSocket.emit("message", `${player.username} has been hit for ${boss.damage} damage`)
+        if (!boss.data.stunned) {
+            const totalHitPoints = players.map(player => player.hitPoints).reduce((a, b) => a + b)
+            for (const player of players) {
+                if (Math.floor(Math.random() * totalHitPoints) < player.hitPoints) {
+                    player.health -= boss.damage
+                    hostSocket.emit("message", `${player.username} has been hit for ${boss.damage} damage`)
+                    sockets.get(player.username).emit("set player health", player.health)
 
-                if (player.hitPoints < 0) {
-                    sockets.get(player.username).emit("dead")
+                    if (player.health <= 0) {
+                        sockets.get(player.username).emit("dead")
 
-                    const index = game.players.indexOf(player._id);
-                    if (index > -1) {
-                        game.players.splice(index, 1);
-                        await game.save()
-                    }
+                        const index = game.players.indexOf(player._id);
+                        if (index > -1) {
+                            game.players.splice(index, 1);
+                            await game.save()
+                        }
 
-                    hostSocket.emit("styled message", {
-                        content: `${player.username} has died... There are ${game.players.length} remaining`,
-                        style: "has-text-danger has-text-weight-bold"
-                    })
-
-                    if (game.players.length === 0) {
                         hostSocket.emit("styled message", {
-                            content: "You have lost the game...",
+                            content: `${player.username} has died... There are ${game.players.length} remaining`,
                             style: "has-text-danger has-text-weight-bold"
                         })
-                    }
-                }
 
-                await player.save()
+                        if (game.players.length === 0) {
+                            hostSocket.emit("styled message", {
+                                content: "You have lost the game...",
+                                style: "has-text-danger has-text-weight-bold"
+                            })
+                        }
+                    }
+
+                    await player.save()
+                }
             }
+        } else {
+            boss.data.stunned = false
+            await boss.save()
         }
+
+        hostSocket.emit("set boss health", boss.health) // Update health at end
     } else {
         res.json(false)
     }

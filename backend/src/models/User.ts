@@ -9,7 +9,8 @@ type IUser = {
     actionCharge: Number
     job: String
     hitPoints: number
-    health: number
+    health: number,
+    maxHealth: number
 }
 
 export type UserDoc = IUser & Document;
@@ -21,7 +22,8 @@ const userModel = new Schema({
     actionCharge: Number,
     job: String,
     hitPoints: Number,
-    health: Number
+    health: Number,
+    maxHealth: Number
 })
 
 export const User = model<UserDoc>("User", userModel);

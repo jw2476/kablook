@@ -5,7 +5,7 @@ export enum SpellType {
     Fireball,
     Electrocute,
     Taunt,
-    Smite,
+    Heal,
     TacticalStrike,
     ForcefulStrike
 }
@@ -21,15 +21,15 @@ export type Spell = {
 const spells: Spell[] = [
     {
         name: "Fireball",
-        description: "A big ball of fire, lots of damage",
-        baseDamage: 50,
+        description: "A big ball of fire, medium damage but will set the target on fire",
+        baseDamage: 25,
         job: "Wizard",
         id: SpellType.Fireball
     },
     {
         name: "Electrocute",
-        description: "A big ball of electricity, electrocutes the target",
-        baseDamage: 50,
+        description: "A big ball of electricity, electrocutes the target, with a 5% chance to stun the boss",
+        baseDamage: 10,
         job: "Wizard",
         id: SpellType.Electrocute
     },
@@ -41,15 +41,15 @@ const spells: Spell[] = [
         id: SpellType.Taunt
     },
     {
-        name: "Smite",
-        description: "Smite the enemy with divine power, deals some damage",
-        baseDamage: 25,
+        name: "Heal",
+        description: "Heal yourself to regain health",
+        baseDamage: 50,
         job: "Paladin",
-        id: SpellType.Smite
+        id: SpellType.Heal
     },
     {
         name: "Tactical Strike",
-        description: "Not as much damage as Forceful Strike, but has a 10% chance to stun the enemy, preventing it from attacking someone for a turn",
+        description: "Not as much damage as Forceful Strike, but has a 5% chance to stun the enemy, preventing it from attacking someone for a turn",
         baseDamage: 20,
         job: "Warrior",
         id: SpellType.TacticalStrike
