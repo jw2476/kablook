@@ -41,6 +41,10 @@
                         </button>
                     </div>
                 {/each}
+            </div>
+            {#if jobEmpty}
+                <p class="help is-danger">This cannot be empty</p>
+            {/if}
         </div>
         <div class="field">
             <div class="control">
@@ -60,6 +64,7 @@
     let jobs = [];
     let usernameEmpty = false;
     let passwordEmpty = false;
+    let jobEmpty = false;
     let usernameTaken = false;
 
     enum SignUpStatus {
@@ -77,9 +82,9 @@
     async function submit() {
         usernameEmpty = !username;
         passwordEmpty = !password;
-        usernameTaken = false;
+        jobEmpty = !job;
 
-        if (usernameEmpty || passwordEmpty) return;
+        if (usernameEmpty || passwordEmpty || jobEmpty) return;
 
         fetch("/api/auth/signup", {
             method: "POST",
