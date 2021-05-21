@@ -25,8 +25,8 @@ export default async (req: Request, res: Response) => {
    const code = Math.floor(Math.random() * 1000000);
 
    const boss = await new Boss({
-      health: 1000,
-      maxHealth: 1000,
+      health: 10000,
+      maxHealth: 10000,
       damage: 100,
       data: {
          stunned: false,

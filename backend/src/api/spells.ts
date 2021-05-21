@@ -21,35 +21,35 @@ export type Spell = {
 const spells: Spell[] = [
     {
         name: "Fireball",
-        description: "A big ball of fire, medium damage but will set the target on fire",
+        description: "A big ball of fire, medium damage but will set the target on fire causing damage over time",
         baseDamage: 25,
         job: "Wizard",
         id: SpellType.Fireball
     },
     {
         name: "Electrocute",
-        description: "A big ball of electricity, electrocutes the target, with a 5% chance to stun the boss",
+        description: "A big ball of electricity, electrocutes the target, with a 5% chance to stun the boss, preventing it from attacking this turn",
         baseDamage: 10,
         job: "Wizard",
         id: SpellType.Electrocute
     },
     {
         name: "Taunt",
-        description: "Insult the enemy, no damage, but you will gain a lot of target points, increasing the likelihood of being hit",
+        description: "Insult the enemy, greatly increasing the likelihood of being hit",
         baseDamage: 0,
         job: "Paladin",
         id: SpellType.Taunt
     },
     {
         name: "Heal",
-        description: "Heal yourself to regain health",
+        description: "Heal yourself",
         baseDamage: 50,
         job: "Paladin",
         id: SpellType.Heal
     },
     {
         name: "Tactical Strike",
-        description: "Not as much damage as Forceful Strike, but has a 5% chance to stun the enemy, preventing it from attacking someone for a turn",
+        description: "Not as much damage as Forceful Strike, but has a 5% chance to stun the enemy, preventing it from attacking anyone for a turn",
         baseDamage: 20,
         job: "Warrior",
         id: SpellType.TacticalStrike
