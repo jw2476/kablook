@@ -28,6 +28,7 @@ export default function (socket: Socket) {
 
             const hostSocket = sockets.get(playingGame.host.username)
             hostSocket.emit("user left", user.username)
+            hostSocket.emit("message", `${user.username} has left the game`)
 
             await playingGame.save()
         }

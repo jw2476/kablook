@@ -9,7 +9,6 @@
     import Join from "./game/Join.svelte";
     import Waiting from "./game/Waiting.svelte";
     import Question from "./game/Question.svelte";
-    import Ready from "./game/Ready.svelte";
     import Status from "./game/Status.svelte";
     import SpellSelect from "./game/SpellSelect.svelte";
     import Victory from "./game/Victory.svelte";
@@ -51,10 +50,6 @@
     {:else if currPage === "question"}
         <div in:fade="{{delay: 500}}" out:fade="{{duration: 500}}">
             <Question/>
-        </div>
-    {:else if currPage === "ready"}
-        <div in:fade="{{delay: 500}}" out:fade="{{duration: 500}}">
-            <Ready/>
         </div>
     {:else if currPage === "status"}
         <div in:fade="{{delay: 500}}" out:fade="{{duration: 500}}">

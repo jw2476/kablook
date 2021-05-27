@@ -40,7 +40,8 @@ export default async (req: Request, res: Response) => {
       players: [],
       code,
       finished: 0,
-      boss: boss._id
+      boss: boss._id,
+      started: false
    }).save()
 
    res.json({

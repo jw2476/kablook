@@ -104,7 +104,7 @@ export default async (req: Request, res: Response) => {
         await game.deleteOne()
     }
 
-    if (game.finished === game.players.length) { // Round over
+    if (game.finished % game.players.length === 0) { // Round over
         res.json(true)
         game.finished = 0
         await game.save()

@@ -1,5 +1,8 @@
 <section class="section">
     <div class="container">
+        <div class="box has-text-centered">
+            <p class="title">Code: {$code}</p>
+        </div>
         <div class="box">
             <p class="title">Boss Health</p>
             <progress class="progress is-danger is-large" value={$bossHealth} max="{maxBossHealth}"></progress>
@@ -11,7 +14,7 @@
 </section>
 
 <script lang="ts">
-    import {socket, uuid} from "../stores"
+    import {socket, uuid, code} from "../stores"
     import {onMount} from "svelte";
     import {tweened} from "svelte/motion";
 

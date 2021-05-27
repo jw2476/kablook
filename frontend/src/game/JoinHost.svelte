@@ -1,7 +1,7 @@
 <section class="section">
     <div class="container">
         <div class="box has-text-centered">
-            <p class="code">Code to Join: {code}</p>
+            <p class="code">Code to Join: {$code}</p>
         </div>
         <div class="box main-box has-text-centered">
             <p class="players">Players: {players.length}</p>
@@ -23,9 +23,8 @@
 
 <script lang="ts">
     import {onMount} from "svelte";
-    import {socket, uuid, page} from '../stores';
+    import {socket, uuid, page, code} from '../stores';
 
-    let code = "Loading..";
     let userUUID;
     let players = [];
 
@@ -33,7 +32,7 @@
 
     onMount(() => {
         fetch(`/api/join/createGame?host=${userUUID}`).then(res => res.json()).then(res => {
-            code = res.code
+            code.set(res.code)
             players = res.players
         })
 
@@ -42,7 +41,7 @@
     })
 
     function startGame() {
-        socket.emit("start game", code)
+        socket.emit("start game", $code)
         page.set("status")
     }
 

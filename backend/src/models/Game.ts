@@ -8,6 +8,7 @@ export type IGame = {
     code: number
     finished: number
     boss: BossDoc
+    started: boolean
 }
 
 type GameDoc = IGame & Document;
@@ -17,7 +18,8 @@ const gameModel = new Schema({
     players: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     code: Number,
     finished: Number,
-    boss: {type: Schema.Types.ObjectId, ref: "Boss"}
+    boss: {type: Schema.Types.ObjectId, ref: "Boss"},
+    started: Boolean
 })
 
 export const Game = model<GameDoc>("Game", gameModel);

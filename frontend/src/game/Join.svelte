@@ -22,6 +22,6 @@
     function submit() {
         socket.emit("join game", code)
 
-        socket.on("join game success", () => page.set("waiting"))
+        socket.on("join game success", started => started ? page.set("spellselect") : page.set("waiting"))
     }
 </script>

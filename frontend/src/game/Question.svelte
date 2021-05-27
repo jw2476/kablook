@@ -120,7 +120,7 @@
 
             await actionCharge.set(0)
 
-            if (!last) page.set("ready")
+            if (!last) page.set("spellselect")
         }
     }
 </script>

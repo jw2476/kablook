@@ -4,6 +4,7 @@ import {io, Socket} from "socket.io-client";
 export const page = writable("home");
 export const uuid = writable(localStorage.getItem("uuid"));
 export const spell = writable(null)
+export const code = writable(null)
 export let socket;
 
 uuid.subscribe(uuid => {

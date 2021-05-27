@@ -12,7 +12,7 @@ export default function (socket: Socket) {
         player.maxHealth = player.health
         await player.save()
 
-        socket.emit("join game success")
+        socket.emit("join game success", game.started)
 
         if (game.players.includes(player._id)) {
             return
@@ -23,6 +23,7 @@ export default function (socket: Socket) {
 
         const hostSocket = sockets.get(game.host.username)
         hostSocket.emit("user joined", socket.data.username)
+        if (game.started) hostSocket.emit("message", `${player.username} has rejoined the fight!`)
 
     })
 }
